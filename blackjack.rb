@@ -55,58 +55,46 @@ def total (cards, current_total)
 end
 
 # play as many rounds as player wants, returns the players total
-def player_round (player_cards, dealer_cards, player_total, deck)
+def player_round (player_cards, dealer_cards, player_total, player_name, deck)
   # display the first round of cards, only show dealer's top card
+  puts "Welcome, #{player_name}!"
   puts "Dealer has: #{dealer_cards[1]}"
   puts "You have: #{player_cards[0]} and #{player_cards[1]}"
-  total(player_cards,player_total)
-  puts "Your total is #{player_total}"
-  puts "Would you like to hit or stay?"
+  player_total = total(player_cards,player_total)
+  puts "Your total is #{player_total}, would you like to hit or stay?"
   # add validation for this
-  hit_stay = gets.chomp
+  hit_stay = gets.chomp.downcase
   while hit_stay == "hit"
     player_cards << deal_cards(1,deck)
-    total(player_cards, player_total)
-    if total <= 21
-      puts 
-      puts "Would you like to hit or stay?"
+    player_total = total(player_cards, player_total)
+    if player_total < 21
+      puts "Your total is now #{player_total}, would you like to hit or stay?"
+      hit_stay = gets.chomp
+    elsif player_total > 21
+      puts "Sorry, looks like you've gone bust!"
+      hit_stay = "bust"
+    else
+      puts "Blackjack! You win!!!"
+      hit_stay = "blackjack"
     end
   end
   player_total
 end
 
+#initialize variables used for game
 player_name = name 
 deck = init_deck
-
-# deal the cards
-player_cards = deal_cards(2,deck)
-dealer_cards = deal_cards(2,deck)
-
-# display the first round of cards, only show dealer's top card
-# puts "Dealer has: #{dealer_cards[1]}"
-# puts "You have: #{player_cards[0]} and #{player_cards[1]}"
-
-# initialize total variables
 player_total = 0
 dealer_total = 0
 
-# calculate totals
-player_total = total(player_cards, player_total)
-dealer_total = total(dealer_cards, dealer_total)
+# deal the initial cards
+player_cards = deal_cards(2,deck)
+dealer_cards = deal_cards(2,deck)
 
-# next round
-=begin
-puts "The dealer total is: #{dealer_total}"
-puts "#{player_name}, your total is: #{player_total}"
-puts "Do you want to hit or stay?"
-hit_stay = gets.chomp
-if hit_stay == "hit"
-  deal_card(player_cards, deck)
-  total(player_cards, player_total)
-  puts "#{player_name}, now your total is: #{player_total}"
-else
-  puts "player chose to stay or invalid input"
-end
-=end
+player_total = player_round(player_cards, dealer_cards, player_total, player_name, deck)
+puts "Player round finished, total is #{player_total}."
+
+
+
 
 
