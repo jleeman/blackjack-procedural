@@ -36,22 +36,43 @@ def total (cards, current_total)
 
   card_values.each do |value|
     case value
-    # reg exp for 2-10, better way to do this? 
-    when /[2-9]|[1][0]/ 
-      current_total += value.to_i
-    # face cards
-    when /[JQK]/
-      current_total += 10
-    # aces
-    when "A"
-      if current_total + 11 <= 21
-        current_total += 11
-      else
-        current_total += 1
-      end
+      # reg exp for 2-10, better way to do this? 
+      when /[2-9]|[1][0]/ 
+        current_total += value.to_i
+      # face cards
+      when /[JQK]/
+        current_total += 10
+      # aces
+      when "A"
+        if current_total + 11 <= 21
+          current_total += 11
+        else
+          current_total += 1
+        end
     end
   end
   current_total
+end
+
+# return the integer value of a specific card !!! IMPORTANT, MAYBE CALL THIS FROM ABOVE TOTAL METHOD !!! NO DUPLICATE CODE
+def card_value (card, current_total)
+    x = card
+    case x
+      # reg exp for 2-10, better way to do this? 
+      when /[2-9]|[1][0]/ 
+        value = x.to_i 
+      # face cards
+      when /[JQK]/
+        value = 10
+      # aces
+      when "A"
+        if current_total + 11 <= 21
+          value = 11
+        else
+          value = 1
+        end
+    end
+  value
 end
 
 # play as many rounds as player wants, returns the players total
@@ -66,10 +87,13 @@ def player_round (player_cards, dealer_cards, player_total, player_name, deck)
   hit_stay = gets.chomp.downcase
   while hit_stay == "hit"
     player_cards << deal_cards(1,deck)
-    player_total = total(player_cards, player_total)
+    # IMPORTANT: NOT ADDING CORRECTLY, NEED TO MAYBE WRITE METHOD TO GET LAST CARD'S VALUE, CALL IT HERE
+    # BEFORE ADDING TO THE TOTAL
+    card = player_cards.last.last[1]
+    player_total += card_value(card, player_total)
     if player_total < 21
       puts "Your total is now #{player_total}, would you like to hit or stay?"
-      hit_stay = gets.chomp
+      hit_stay = gets.chomp.downcase
     elsif player_total > 21
       puts "Sorry, looks like you've gone bust!"
       hit_stay = "bust"
@@ -80,6 +104,8 @@ def player_round (player_cards, dealer_cards, player_total, player_name, deck)
   end
   player_total
 end
+
+# write dealer round method here
 
 #initialize variables used for game
 player_name = name 
@@ -93,6 +119,7 @@ dealer_cards = deal_cards(2,deck)
 
 player_total = player_round(player_cards, dealer_cards, player_total, player_name, deck)
 puts "Player round finished, total is #{player_total}."
+
 
 
 
