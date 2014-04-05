@@ -1,3 +1,5 @@
+require 'pry'
+
 # get the player's name, add more validation for this
 def name
   puts "Welcome to the casino!!! What's your name?"
@@ -52,6 +54,27 @@ def total (cards, current_total)
   current_total
 end
 
+# play as many rounds as player wants, returns the players total
+def player_round (player_cards, dealer_cards, player_total, deck)
+  # display the first round of cards, only show dealer's top card
+  puts "Dealer has: #{dealer_cards[1]}"
+  puts "You have: #{player_cards[0]} and #{player_cards[1]}"
+  total(player_cards,player_total)
+  puts "Your total is #{player_total}"
+  puts "Would you like to hit or stay?"
+  # add validation for this
+  hit_stay = gets.chomp
+  while hit_stay == "hit"
+    player_cards << deal_cards(1,deck)
+    total(player_cards, player_total)
+    if total <= 21
+      puts 
+      puts "Would you like to hit or stay?"
+    end
+  end
+  player_total
+end
+
 player_name = name 
 deck = init_deck
 
@@ -59,9 +82,9 @@ deck = init_deck
 player_cards = deal_cards(2,deck)
 dealer_cards = deal_cards(2,deck)
 
-# display the first round of cards
-puts "Dealer has: #{dealer_cards[1]}"
-puts "You have: #{player_cards[0]} and #{player_cards[1]}"
+# display the first round of cards, only show dealer's top card
+# puts "Dealer has: #{dealer_cards[1]}"
+# puts "You have: #{player_cards[0]} and #{player_cards[1]}"
 
 # initialize total variables
 player_total = 0
@@ -72,6 +95,7 @@ player_total = total(player_cards, player_total)
 dealer_total = total(dealer_cards, dealer_total)
 
 # next round
+=begin
 puts "The dealer total is: #{dealer_total}"
 puts "#{player_name}, your total is: #{player_total}"
 puts "Do you want to hit or stay?"
@@ -83,6 +107,6 @@ if hit_stay == "hit"
 else
   puts "player chose to stay or invalid input"
 end
-
+=end
 
 
