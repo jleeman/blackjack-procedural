@@ -93,14 +93,10 @@ end
 
 # dealer round, no choice but casino logic, returns dealers total
 def dealer_round (dealer_cards, dealer_total, deck)
-  puts "Now it's the dealer's turn to play."
-# SOMETHING IS GOING WRONG HERE, DEALER_CARDS HAS CHANGED FROM INITIAL DEAL SOMEHOW
-  puts "#{dealer_total}"
-  puts "#{dealer_cards}"
+  puts "Now it's the dealer's turn to play..."
   dealer_total = total(dealer_cards, dealer_total)
-  puts "Dealer's initial total after total method: #{dealer_total}"
   while dealer_total <= 17
-    puts "Dealing another card."
+    puts "Dealing another card..."
     dealer_cards << deal_cards(1,deck)
     value_string = dealer_cards.last.last[1]
     puts "Dealer has been dealt a #{value_string}."
